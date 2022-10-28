@@ -22,7 +22,7 @@ export default createStore({
 
 				const rawdata = await fetch(
 					url +
-						`users?username=${payload.username}&password${payload.password}`,
+						`users?username=${payload.username}&email${payload.email}`,
 				);
 				const [user] = await rawdata.json();
 				if (user) {
@@ -41,7 +41,7 @@ export default createStore({
 		async fetchUserPosts({ commit }, payload) {
 			try {
 				commit('setLoading', true);
-				const rawdata = await fetch(url + `posts?user_id=${payload}`);
+				const rawdata = await fetch(url + `posts?userId=${payload}`);
 				const posts = await rawdata.json();
 
 				commit('setLoading', false);
@@ -60,10 +60,10 @@ export default createStore({
 					},
 					body: payload,
 				});
-				const posts = await rawdata.json();
-				if (posts) {
+				const post = await rawdata.json();
+				if (post) {
 					commit('setLoading', false);
-					alert('Post created successfully!');
+					alert(`Post created successfully post id is ${post.id}`);
 				}
 			} catch (err) {
 				commit('setResult', err.message);
@@ -72,17 +72,17 @@ export default createStore({
 		async editPost({ commit }, payload) {
 			try {
 				commit('setLoading', true);
-				const rawdata = await fetch(url + `posts/${payload.post_id}`, {
+				const rawdata = await fetch(url + `posts/${payload.id}`, {
 					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ post_body: payload.post_body }),
+					body: JSON.stringify({ payload }),
 				});
 				const post = await rawdata.json();
 				commit('setLoading', false);
-				alert('Post edited successfully!');
-				commit('setUpdatedPost', post);
+				alert(`Post edited successfully. Post is is ${post.id}`);
+				commit('setUpdatedPost', payload);
 			} catch (err) {
 				commit('setResult', err.message);
 			}
@@ -98,7 +98,7 @@ export default createStore({
 				});
 				const post = await rawdata.json();
 				commit('setLoading', false);
-				alert('Deleted successfully');
+				alert(`Post deleted`);
 			} catch (err) {
 				commit('setResult', err.message);
 			}
@@ -110,7 +110,7 @@ export default createStore({
 			state.result = result;
 		},
 		setUser: (state, payload) => {
-			localStorage.setItem('user_id', payload.user_id);
+			localStorage.setItem('user_id', payload.id);
 			localStorage.setItem('isLogged', true);
 			state.user = payload;
 		},

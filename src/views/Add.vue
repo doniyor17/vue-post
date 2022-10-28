@@ -6,6 +6,7 @@
 	<div class="container">
 		<div>
 			<p>Post body</p>
+			<input type="text" placeholder="Post title" v-model="postTitle" />
 			<textarea
 				cols="30"
 				rows="10"
@@ -25,6 +26,7 @@
 	export default {
 		data() {
 			return {
+				postTitle: '',
 				postBody: '',
 				userId: null,
 				showResult: false,
@@ -41,11 +43,11 @@
 		methods: {
 			...mapActions(['addNewPost']),
 			addPost() {
-				if (this.postBody !== '') {
+				if (this.postTitle !== '' && this.postBody !== '') {
 					let payload = {
-						post_id: new Date(),
-						user_id: this.userId,
-						post_body: this.postBody,
+						userId: this.userId,
+						postTitle: this.postTitle,
+						postBody: this.postBody,
 					};
 					this.addNewPost(JSON.stringify(payload));
 					this.postBody = '';

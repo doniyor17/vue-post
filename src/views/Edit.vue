@@ -6,16 +6,26 @@
 			{{ getResult }}
 		</div>
 		<div v-if="showModal" class="modal">
-			<div class="content">
+			<div class="content" style="margin-top: 30px">
+				<input
+					style="display: block; margin-bottom: 20px"
+					type="text"
+					v-model="newTitle"
+				/>
 				<textarea cols="30" rows="10" v-model="newBody"></textarea>
 				<button @click="postEdit">Edit</button>
 			</div>
 		</div>
 		<ul v-else>
 			<li class="post" v-for="post of getUserPosts" :key="post.id">
-				<span class="postBody">
-					{{ post.post_body }}
-				</span>
+				<div>
+					<h3 class="postBody">
+						{{ post.title }}
+					</h3>
+					<p class="postBody">
+						{{ post.body }}
+					</p>
+				</div>
 				<div>
 					<i class="fa-solid fa-pen" @click="openModal(post)"></i>
 					<i
@@ -36,6 +46,7 @@
 		data() {
 			return {
 				showModal: false,
+				newTitle: '',
 				newBody: '',
 				postId: null,
 				showResult: false,
@@ -46,19 +57,25 @@
 			Loading,
 		},
 		computed: mapGetters(['getUserPosts', 'getLoading', 'getResult']),
+		created(){
+			let userId = localStorage.getItem('user_id');
+			this.fetchUserPosts(userId);
+		},
 		methods: {
 			...mapActions(['editPost', 'fetchUserPosts', 'delPost']),
 			...mapMutations(['setDeletedPost']),
 			openModal(post) {
 				this.showModal = true;
-				this.newBody = post.post_body;
+				this.newTitle = post.title;
+				this.newBody = post.body;
 				this.postId = post.id;
 			},
 			postEdit() {
-				if (this.newBody !== '') {
+				if (this.newBody !== '' && this.newTitle !== '') {
 					let post = {
-						post_id: this.postId,
-						post_body: this.newBody,
+						id: this.postId,
+						title: this.newTitle,
+						body: this.newBody,
 					};
 					this.editPost(post);
 					this.showModal = false;
@@ -69,8 +86,11 @@
 				}
 			},
 			deletePost(id) {
-				this.delPost(id)
-				this.setDeletedPost(id)
+				let isDelete = confirm('Are you sure?')
+				if(isDelete){
+					this.delPost(id)
+					this.setDeletedPost(id)
+				}
 			},
 		},
 	};

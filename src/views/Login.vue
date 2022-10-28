@@ -2,19 +2,19 @@
 	<table>
 		<tr>
 			<th>Username</th>
-			<th>Password</th>
+			<th>Email</th>
 		</tr>
 		<tr>
-			<td>john</td>
-			<td>1</td>
+			<td>Bret</td>
+			<td>Sincere@april.biz</td>
 		</tr>
 		<tr>
-			<td>joe</td>
-			<td>1</td>
+			<td>Antonette</td>
+			<td>Shanna@melissa.tv</td>
 		</tr>
 		<tr>
-			<td>job</td>
-			<td>1</td>
+			<td>Samantha</td>
+			<td>Nathan@yesenia.net</td>
 		</tr>
 	</table>
 	<div class="login container">
@@ -29,12 +29,12 @@
 				/>
 			</div>
 			<div class="mt-5 inp-box">
-				<label class="block mb-2">Password</label>
+				<label class="block mb-2">Email</label>
 				<input
 					class="w-full border-1 px-1 py-2 outline-none"
-					type="password"
-					v-model="password"
-					placeholder="Password"
+					type="email"
+					v-model="email"
+					placeholder="Email"
 				/>
 			</div>
 			<div class="btn-box text-center">
@@ -55,7 +55,7 @@
 		data() {
 			return {
 				username: '',
-				password: '',
+				email: '',
 			};
 		},
 		computed: mapGetters(['getLoading']),
@@ -64,7 +64,7 @@
 			login() {
 				let user = {
 					username: this.username,
-					password: this.password,
+					email: this.email,
 				};
 				this.userLogin(user);
 			},

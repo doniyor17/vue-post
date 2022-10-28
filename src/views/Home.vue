@@ -3,8 +3,9 @@
 	<Loading v-if="getLoading" />
 	<div class="container">
 		<ul v-if="!getLoading">
-			<li v-for="post of getUserPosts" :key="post.post_id">
-				{{ post.post_body }}
+			<li v-for="post of getUserPosts" :key="post.id">
+				<h2>{{ post.title }}</h2>
+				<p>{{ post.body }}</p>
 			</li>
 		</ul>
 	</div>
